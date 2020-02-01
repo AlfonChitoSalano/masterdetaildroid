@@ -1,4 +1,4 @@
-package com.haiyangrpdev.apptmasterdetail;
+package com.haiyangrpdev.apptmasterdetail.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
 
 public class ItemDetailFragment extends Fragment {

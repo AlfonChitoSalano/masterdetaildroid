@@ -1,4 +1,4 @@
-package com.haiyangrpdev.apptmasterdetail;
+package com.haiyangrpdev.apptmasterdetail.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
 import java.util.List;
+import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
 
-
-public class ItemListActivity extends AppCompatActivity {
+public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
     private boolean mTwoPane;
 
@@ -50,6 +51,12 @@ public class ItemListActivity extends AppCompatActivity {
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+    }
+
+    @NonNull
+    @Override
+    protected ItemListActivityViewModel createViewModel() {
+        return new ItemListActivityViewModel();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
