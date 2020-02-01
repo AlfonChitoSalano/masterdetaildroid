@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,37 +14,34 @@ import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
 import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
+import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 
 public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
     private boolean mTwoPane;
+    private List<DummyContent.DummyItem> mDummyItems;
+    private List<AppITunes> mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //main layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
+        //prepare data via VM
+        mDummyItems = viewModel.getDummyData();
+        mData = viewModel.getData();
+
+        //toolbar stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         if (findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 
+        //recyclerview stuff
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -60,7 +54,7 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mDummyItems, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
