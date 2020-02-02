@@ -19,6 +19,7 @@ public class ItemListActivityViewModel extends BaseViewModel {
 
     ItemListActivityViewModel(ITunesService iTunesService) {
         this.iTunesService = iTunesService;
+        this.Songs = new MutableLiveData<>();
     }
 
     public void getData() {

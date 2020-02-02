@@ -33,7 +33,7 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         try {
             //prepare data via VM
             viewModel.getData();
-            viewModel.getSongs().observe(this, new MovieObserver());
+            viewModel.getSongs().observe(this, new SongsObserver());
 
             //toolbar stuff
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -43,11 +43,6 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
             if (findViewById(R.id.item_detail_container) != null) {
                 mTwoPane = true;
             }
-
-            //recyclerview stuff
-            View recyclerView = findViewById(R.id.item_list);
-            assert recyclerView != null;
-            setupRecyclerView((RecyclerView) recyclerView);
         }
         catch (Exception e) {
            String errorMessage = e.getMessage();
@@ -140,18 +135,16 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         }
     }
 
-    private class MovieObserver implements Observer<List<AppITunes>> {
+    private class SongsObserver implements Observer<List<AppITunes>> {
 
         @Override
-        public void onChanged(@Nullable List<AppITunes> movies) {
-            if (movies == null) return;
-            //movieAdapter.setItems(movies);
-
-            //if (movies.isEmpty()) {
-            //    emptyView.setVisibility(View.VISIBLE);
-           // } else {
-           //     emptyView.setVisibility(View.GONE);
-            //}
+        public void onChanged(@Nullable List<AppITunes> songs) {
+            //draw view
+            if (songs == null) return;
+            mData = songs;
+            View recyclerView = findViewById(R.id.item_list);
+            assert recyclerView != null;
+            setupRecyclerView((RecyclerView) recyclerView);
         }
     }
 }
