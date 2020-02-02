@@ -1,13 +1,15 @@
 package com.haiyangrpdev.apptmasterdetail.ui;
 
-import android.appwidget.AppWidgetProviderInfo;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +26,24 @@ import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 import com.bumptech.glide.Glide;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
+import com.haiyangrpdev.apptmasterdetail.utility.ExtStorageHelper;
 
 public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
+    private boolean mWritePermitted;
+    private boolean mReadPermitted;
     private boolean mTwoPane;
     private List<AppITunes> mData;
-    static final int STORAGE_REQUEST = 1;
+    private static final int STORAGE_REQUEST = 1;
+    private static int WRITE_PERMISSION = 1;
+    private static int READ_PERMISSION = 2;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mWritePermitted = (requestCode == WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+        mReadPermitted = (requestCode == READ_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +66,9 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
             }
 
             //ask permission
-            StorageManager sm = (StorageManager)getSystemService(Context.STORAGE_SERVICE);
-            StorageVolume volume = sm.getPrimaryStorageVolume();
-            Intent intent = volume.createAccessIntent(Environment.DIRECTORY_PICTURES);
-            startActivityForResult(intent, STORAGE_REQUEST);
+            if (isReadStoragePermissionGranted() && isWriteStoragePermissionGranted()) {
+                //do nothing
+            }
         }
         catch (Exception e) {
            String errorMessage = e.getMessage();
@@ -70,6 +83,32 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mData, mTwoPane));
+    }
+
+    private boolean isWriteStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, READ_PERMISSION);
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isReadStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION);
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     public static class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
