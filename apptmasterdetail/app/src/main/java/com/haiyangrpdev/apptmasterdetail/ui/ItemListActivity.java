@@ -54,19 +54,19 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mDummyItems, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mData, mTwoPane));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public static class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<AppITunes> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                /*DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
@@ -79,14 +79,13 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
                     intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
-
                     context.startActivity(intent);
-                }
+                }*/
             }
         };
 
         SimpleItemRecyclerViewAdapter(ItemListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<AppITunes> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
@@ -102,9 +101,13 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            //display fields
+            holder.mTrackNameView.setText(mValues.get(position).getTrackName());
+            holder.mArtworkView.setText(mValues.get(position).getArtwork());
+            holder.mGenreView.setText(mValues.get(position).getGenre());
+            holder.mPriceView.setText(String.valueOf(mValues.get(position).getPrice()));
 
+            //set listener
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
         }
@@ -115,15 +118,18 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+            final TextView mTrackNameView;
+            final TextView mArtworkView;
+            final TextView mGenreView;
+            final TextView mPriceView;
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mTrackNameView = (TextView) view.findViewById(R.id.tvTrackName);
+                mArtworkView = (TextView) view.findViewById(R.id.tvArtwork);
+                mGenreView = (TextView) view.findViewById(R.id.tvGenre);
+                mPriceView = (TextView) view.findViewById(R.id.tvPrice);
             }
         }
     }
-
 }

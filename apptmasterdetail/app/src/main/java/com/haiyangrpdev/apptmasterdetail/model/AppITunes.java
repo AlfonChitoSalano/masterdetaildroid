@@ -1,8 +1,7 @@
 package com.haiyangrpdev.apptmasterdetail.model;
 
-import java.math.BigDecimal;
-
 public class AppITunes {
+
     private String TrackName;
 
     public String getTrackName() {
@@ -17,13 +16,27 @@ public class AppITunes {
 
     private String Genre;
 
-    public String getGenre() {
-        return Genre;
+    public String getGenre() { return Genre; }
+
+    private double Price;
+
+    public double getPrice() {
+        return Price;
     }
 
-    private BigDecimal Price;
+    public void setTrackName(String trackName){
+        TrackName = trackName;
+    }
 
-    public BigDecimal getPrice() {
-        return Price;
+    public void setArtwork(String artWork){
+        Artwork = artWork;
+    }
+
+    public void setGenre(String genre){
+        Genre = genre;
+    }
+
+    public void setPrice(double price){
+        Price = price;
     }
 }

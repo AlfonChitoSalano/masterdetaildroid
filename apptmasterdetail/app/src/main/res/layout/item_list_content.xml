@@ -5,16 +5,31 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/id_text"
+        android:id="@+id/tvTrackName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"/>
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/tvArtwork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"/>
+
+    <TextView
+        android:id="@+id/tvGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"/>
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"/>
+
 </LinearLayout>
