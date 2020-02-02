@@ -3,6 +3,9 @@ package com.haiyangrpdev.apptmasterdetail.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AppITunes {
 
     @Expose
@@ -14,7 +17,7 @@ public class AppITunes {
     }
 
     @Expose
-    @SerializedName("artworkUrl30")
+    @SerializedName("artworkUrl100")
     private String Artwork;
 
     public String getArtwork() {
@@ -33,6 +36,14 @@ public class AppITunes {
 
     public double getPrice() {
         return Price;
+    }
+
+    @Expose
+    @SerializedName("trackNumber")
+    private int TrackNumber;
+
+    public int getTrackNumber() {
+        return TrackNumber;
     }
 
     public void setTrackName(String trackName){

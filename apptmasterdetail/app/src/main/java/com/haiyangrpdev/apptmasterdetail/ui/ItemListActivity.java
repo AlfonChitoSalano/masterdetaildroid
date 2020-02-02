@@ -7,9 +7,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.lifecycle.Observer;
 import androidx.annotation.Nullable;
@@ -18,11 +21,15 @@ import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
 import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
+import com.bumptech.glide.Glide;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 
 public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
     private boolean mTwoPane;
     private List<AppITunes> mData;
+    static final int STORAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,12 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
             if (findViewById(R.id.item_detail_container) != null) {
                 mTwoPane = true;
             }
+
+            //ask permission
+            StorageManager sm = (StorageManager)getSystemService(Context.STORAGE_SERVICE);
+            StorageVolume volume = sm.getPrimaryStorageVolume();
+            Intent intent = volume.createAccessIntent(Environment.DIRECTORY_PICTURES);
+            startActivityForResult(intent, STORAGE_REQUEST);
         }
         catch (Exception e) {
            String errorMessage = e.getMessage();
@@ -68,10 +81,11 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
             @Override
             public void onClick(View view) {
-                /*DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                AppITunes item = (AppITunes) view.getTag();
+
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(item.getTrackNumber()));
                     ItemDetailFragment fragment = new ItemDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -80,9 +94,9 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(item.getTrackNumber()));
                     context.startActivity(intent);
-                }*/
+                }
             }
         };
 
@@ -105,7 +119,7 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             //display fields
             holder.mTrackNameView.setText(mValues.get(position).getTrackName());
-            holder.mArtworkView.setText(mValues.get(position).getArtwork());
+            Glide.with(holder.mArtworkView.getContext()).load(mValues.get(position).getArtwork()).into(holder.mArtworkView);
 
             //set listener
             holder.itemView.setTag(mValues.get(position));
@@ -119,12 +133,12 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mTrackNameView;
-            final TextView mArtworkView;
+            final ImageView mArtworkView;
 
             ViewHolder(View view) {
                 super(view);
                 mTrackNameView = (TextView) view.findViewById(R.id.tvTrackName);
-                mArtworkView = (TextView) view.findViewById(R.id.tvArtwork);
+                mArtworkView = (ImageView) view.findViewById(R.id.tvArtwork);
             }
         }
     }

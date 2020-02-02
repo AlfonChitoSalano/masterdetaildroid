@@ -8,28 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.haiyangrpdev.apptmasterdetail.R;
-//ct0.temp rem dummy import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
+import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 
 public class ItemDetailFragment extends Fragment {
 
+    private AppITunes mItem;
     public static final String ARG_ITEM_ID = "item_id";
 
-    //ct0.temp rem dummy private DummyContent.DummyItem mItem;
-
-    public ItemDetailFragment() {
-    }
+    public ItemDetailFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            //ct0.temp rem dummy mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-
+            //ct0.temp rem dummy  mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+
             if (appBarLayout != null) {
             //ct0.temp rem dummy  appBarLayout.setTitle(mItem.content);
             }
@@ -37,8 +34,7 @@ public class ItemDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_detail, container, false);
 
         //ct0.temp rem dummy
