@@ -106,8 +106,6 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
             //display fields
             holder.mTrackNameView.setText(mValues.get(position).getTrackName());
             holder.mArtworkView.setText(mValues.get(position).getArtwork());
-            holder.mGenreView.setText(mValues.get(position).getGenre());
-            holder.mPriceView.setText(String.valueOf(mValues.get(position).getPrice()));
 
             //set listener
             holder.itemView.setTag(mValues.get(position));
@@ -122,15 +120,11 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mTrackNameView;
             final TextView mArtworkView;
-            final TextView mGenreView;
-            final TextView mPriceView;
 
             ViewHolder(View view) {
                 super(view);
                 mTrackNameView = (TextView) view.findViewById(R.id.tvTrackName);
                 mArtworkView = (TextView) view.findViewById(R.id.tvArtwork);
-                mGenreView = (TextView) view.findViewById(R.id.tvGenre);
-                mPriceView = (TextView) view.findViewById(R.id.tvPrice);
             }
         }
     }
