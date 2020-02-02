@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import androidx.annotation.NonNull;
-import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
+import androidx.lifecycle.MutableLiveData;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseViewModel;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
@@ -15,7 +15,7 @@ import com.haiyangrpdev.apptmasterdetail.model.AppITunesResponse;
 public class ItemListActivityViewModel extends BaseViewModel {
 
     private ITunesService iTunesService;
-    private List<AppITunes> Songs;
+    private MutableLiveData<List<AppITunes>> Songs;
 
     ItemListActivityViewModel(ITunesService iTunesService) {
         this.iTunesService = iTunesService;
@@ -26,17 +26,17 @@ public class ItemListActivityViewModel extends BaseViewModel {
         this.iTunesService.getSongsApi().getAllSongs().enqueue(new SongsCallback());
     }
 
-    //this is only dummy
-    public List<DummyContent.DummyItem> getDummyData(){
-        return DummyContent.ITEMS;
-    }
-
-    public List<AppITunes> getSongs() {
+    public MutableLiveData<List<AppITunes>> getSongs() {
         return Songs;
     }
 
     private void setSongs(List<AppITunes> songs) {
-        Songs = songs;
+        try {
+            this.Songs.postValue(songs);
+        }
+        catch (Exception e) {
+            String errorMessage = e.getMessage();
+        }
     }
 
     //callback

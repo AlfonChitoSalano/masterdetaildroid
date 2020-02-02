@@ -1,5 +1,6 @@
 package com.haiyangrpdev.apptmasterdetail.ui;
 
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.lifecycle.Observer;
+import androidx.annotation.Nullable;
 import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
 import java.util.List;
@@ -30,7 +33,7 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         try {
             //prepare data via VM
             viewModel.getData();
-            //ct0.temp to do viewModel.getSongs().observe(this, new MovieObserver());
+            viewModel.getSongs().observe(this, new MovieObserver());
 
             //toolbar stuff
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -134,6 +137,21 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
                 mGenreView = (TextView) view.findViewById(R.id.tvGenre);
                 mPriceView = (TextView) view.findViewById(R.id.tvPrice);
             }
+        }
+    }
+
+    private class MovieObserver implements Observer<List<AppITunes>> {
+
+        @Override
+        public void onChanged(@Nullable List<AppITunes> movies) {
+            if (movies == null) return;
+            //movieAdapter.setItems(movies);
+
+            //if (movies.isEmpty()) {
+            //    emptyView.setVisibility(View.VISIBLE);
+           // } else {
+           //     emptyView.setVisibility(View.GONE);
+            //}
         }
     }
 }

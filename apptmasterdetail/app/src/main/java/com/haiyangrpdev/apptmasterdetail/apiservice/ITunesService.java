@@ -34,6 +34,6 @@ public class ITunesService {
     }
 
     public interface SongsApi {
-        @GET("songs/") Call<AppITunesResponse> getAllSongs();
+        @GET("search?term=star&amp;country=au&amp;media=movie&amp;all") Call<AppITunesResponse> getAllSongs();
     }
 }
