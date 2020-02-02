@@ -29,7 +29,7 @@ public class ITunesService {
         }
     }
 
-    public SongsApi getMovieApi() {
+    public SongsApi getSongsApi() {
         return mSongsApi;
     }
 

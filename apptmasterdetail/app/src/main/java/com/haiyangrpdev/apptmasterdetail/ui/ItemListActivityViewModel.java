@@ -1,44 +1,62 @@
 package com.haiyangrpdev.apptmasterdetail.ui;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import androidx.annotation.NonNull;
 import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseViewModel;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
+import com.haiyangrpdev.apptmasterdetail.model.AppITunesResponse;
 
 public class ItemListActivityViewModel extends BaseViewModel {
 
     private ITunesService iTunesService;
+    private List<AppITunes> Songs;
 
     ItemListActivityViewModel(ITunesService iTunesService) {
         this.iTunesService = iTunesService;
     }
 
-    public List<AppITunes> getData() {
-        //set dummy data
-        AppITunes app1 = new AppITunes();
-        app1.setArtwork("Art 1");
-        app1.setGenre("Genre 1");
-        app1.setTrackName("TrackName 1");
-        app1.setPrice(100.10);
-
-        AppITunes app2 = new AppITunes();
-        app2.setArtwork("Art 2");
-        app2.setGenre("Genre 2");
-        app2.setTrackName("TrackName 2");
-        app2.setPrice(200.10);
-
-
-        //return list of data
-        List<AppITunes> appITunesList = new ArrayList<> ();
-        appITunesList.add(app1);
-        appITunesList.add(app2);
-        return appITunesList;
+    public void getData() {
+        //load songs from api
+        this.iTunesService.getSongsApi().getAllSongs().enqueue(new SongsCallback());
     }
 
     //this is only dummy
     public List<DummyContent.DummyItem> getDummyData(){
         return DummyContent.ITEMS;
+    }
+
+    public List<AppITunes> getSongs() {
+        return Songs;
+    }
+
+    private void setSongs(List<AppITunes> songs) {
+        Songs = songs;
+    }
+
+    //callback
+    private class SongsCallback implements Callback<AppITunesResponse> {
+
+        @Override
+        public void onResponse(@NonNull Call<AppITunesResponse> call, @NonNull Response<AppITunesResponse> response) {
+
+            AppITunesResponse appITunesResponse = response.body();
+
+            if (appITunesResponse != null) {
+                setSongs(appITunesResponse.getSongs());
+            } else {
+                setSongs(Collections.<AppITunes>emptyList());
+            }
+        }
+
+        @Override
+        public void onFailure(Call<AppITunesResponse> call, Throwable t) {
+            setSongs(Collections.<AppITunes>emptyList());
+        }
     }
 }

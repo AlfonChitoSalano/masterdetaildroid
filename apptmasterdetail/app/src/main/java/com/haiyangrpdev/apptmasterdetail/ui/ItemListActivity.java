@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
-import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
 import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
@@ -20,7 +19,6 @@ import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
     private boolean mTwoPane;
-    private List<DummyContent.DummyItem> mDummyItems;
     private List<AppITunes> mData;
 
     @Override
@@ -31,8 +29,8 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
         try {
             //prepare data via VM
-            mDummyItems = viewModel.getDummyData();
-            mData = viewModel.getData();
+            viewModel.getData();
+            //ct0.temp to do viewModel.getSongs().observe(this, new MovieObserver());
 
             //toolbar stuff
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
