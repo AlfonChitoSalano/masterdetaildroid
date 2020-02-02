@@ -5,8 +5,15 @@ import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseViewModel;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
+import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
 
 public class ItemListActivityViewModel extends BaseViewModel {
+
+    private ITunesService iTunesService;
+
+    ItemListActivityViewModel(ITunesService iTunesService) {
+        this.iTunesService = iTunesService;
+    }
 
     public List<AppITunes> getData() {
         //set dummy data

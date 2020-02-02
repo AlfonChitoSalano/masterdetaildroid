@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.haiyangrpdev.apptmasterdetail.R;
+import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
 import com.haiyangrpdev.apptmasterdetail.dummy.DummyContent;
 import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
@@ -28,29 +29,34 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
-        //prepare data via VM
-        mDummyItems = viewModel.getDummyData();
-        mData = viewModel.getData();
+        try {
+            //prepare data via VM
+            mDummyItems = viewModel.getDummyData();
+            mData = viewModel.getData();
 
-        //toolbar stuff
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+            //toolbar stuff
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(getTitle());
 
-        if (findViewById(R.id.item_detail_container) != null) {
-            mTwoPane = true;
+            if (findViewById(R.id.item_detail_container) != null) {
+                mTwoPane = true;
+            }
+
+            //recyclerview stuff
+            View recyclerView = findViewById(R.id.item_list);
+            assert recyclerView != null;
+            setupRecyclerView((RecyclerView) recyclerView);
         }
-
-        //recyclerview stuff
-        View recyclerView = findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        catch (Exception e) {
+           String errorMessage = e.getMessage();
+        }
     }
 
     @NonNull
     @Override
     protected ItemListActivityViewModel createViewModel() {
-        return new ItemListActivityViewModel();
+        return new ItemListActivityViewModel(ITunesService.getInstance());
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
