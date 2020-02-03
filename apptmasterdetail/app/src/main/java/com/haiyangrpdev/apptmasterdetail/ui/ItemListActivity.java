@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +82,6 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
                     Gson gson = new Gson();
                     AppITunes song = gson.fromJson(previousVisited, new TypeToken<AppITunes>(){}.getType());
                 }
-
             }
         }
         catch (Exception e) {
