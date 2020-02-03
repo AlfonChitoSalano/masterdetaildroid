@@ -38,10 +38,11 @@ public class ExtStorageHelper {
     public static String readData(String folderName, String fileName, Context context) {
         try {
             File dataFile = createFilePath(folderName, fileName, context);
+            int length = (int)dataFile.length();
 
             if (dataFile != null) {
                 FileInputStream mInput = new FileInputStream(dataFile);
-                byte[] data = new byte[128];
+                byte[] data = new byte[length];
                 mInput.read(data);
                 mInput.close();
 
