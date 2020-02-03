@@ -7,6 +7,8 @@
     android:orientation="vertical">
     <ImageView
         android:id="@+id/ivArtwork"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_width="200dp"
         android:layout_height="200dp"/>
     <TextView
