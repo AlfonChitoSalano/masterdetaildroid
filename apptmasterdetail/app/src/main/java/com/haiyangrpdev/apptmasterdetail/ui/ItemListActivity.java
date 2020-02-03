@@ -218,6 +218,7 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
             //draw view
             if (songs == null) return;
             mData = songs;
+            ExtStorageHelper.saveData("songsFolder", "songs.txt", "Data", ItemListActivity.this);
             View recyclerView = findViewById(R.id.item_list);
             assert recyclerView != null;
             setupRecyclerView((RecyclerView) recyclerView);
