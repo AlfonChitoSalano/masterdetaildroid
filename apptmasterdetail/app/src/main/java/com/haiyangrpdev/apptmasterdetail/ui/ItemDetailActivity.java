@@ -2,6 +2,8 @@ package com.haiyangrpdev.apptmasterdetail.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.haiyangrpdev.apptmasterdetail.R;
@@ -11,6 +13,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 /**
  * An activity representing a single Item detail screen. This
