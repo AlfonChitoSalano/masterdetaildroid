@@ -8,8 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
+import com.haiyangrpdev.apptmasterdetail.utility.ExtStorageHelper;
+
+import java.util.List;
 
 public class ItemDetailFragment extends Fragment {
 
@@ -39,9 +45,18 @@ public class ItemDetailFragment extends Fragment {
 
         //ct0.temp rem dummy
         // Show the dummy content as text in a TextView.
-        //if (mItem != null) {
-        //     ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.details);
-        //}
+        String jsonData = ExtStorageHelper.readData("songsFolder","songs.txt", ItemDetailFragment.this.getContext());
+        Gson gson = new Gson();
+        List<AppITunes> songs = gson.fromJson(jsonData, new TypeToken<List<AppITunes>>(){}.getType());
+
+        if (mItem != null) {
+            String trackName = mItem.getTrackName();
+            String trackGenre = mItem.getGenre();
+            String trackArtwork = mItem.getArtwork();
+            double trackPrice = mItem.getPrice();
+
+             ((TextView) rootView.findViewById(R.id.item_detail)).setText(trackName);
+        }
 
         return rootView;
     }
