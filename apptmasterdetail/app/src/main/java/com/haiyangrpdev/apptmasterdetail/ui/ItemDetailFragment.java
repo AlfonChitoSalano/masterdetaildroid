@@ -1,7 +1,6 @@
 package com.haiyangrpdev.apptmasterdetail.ui;
 
 import android.app.Activity;
-import android.media.Image;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -52,7 +51,6 @@ public class ItemDetailFragment extends Fragment {
             }
 
             if (appBarLayout != null) {
-            //ct0.temp rem dummy  appBarLayout.setTitle(mItem.content);
                 appBarLayout.setTitle(mItem.getTrackName());
             }
         }
@@ -65,9 +63,9 @@ public class ItemDetailFragment extends Fragment {
         if (mItem != null) {
             ImageView imageView = rootView.findViewById(R.id.ivArtwork);
             Glide.with(this).load(mItem.getArtwork()).into(imageView);
-            ((TextView) rootView.findViewById(R.id.tvName)).setText(mItem.getTrackName());
-            ((TextView) rootView.findViewById(R.id.tvGenre)).setText(mItem.getGenre());
-            ((TextView) rootView.findViewById(R.id.tvPrice)).setText(String.valueOf(mItem.getPrice()));
+            ((TextView) rootView.findViewById(R.id.tvName)).setText("Name: " + mItem.getTrackName());
+            ((TextView) rootView.findViewById(R.id.tvGenre)).setText("Genre: "+ mItem.getGenre());
+            ((TextView) rootView.findViewById(R.id.tvPrice)).setText("Price: $" + mItem.getPrice());
         }
 
         return rootView;

@@ -26,8 +26,6 @@ import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 import com.bumptech.glide.Glide;
-import android.os.storage.StorageManager;
-import android.os.storage.StorageVolume;
 import com.haiyangrpdev.apptmasterdetail.utility.ExtStorageHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
