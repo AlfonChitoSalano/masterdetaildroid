@@ -155,7 +155,7 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(item.getTrackNumber()));
+                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(item.getTrackId()));
                     ItemDetailFragment fragment = new ItemDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -164,7 +164,7 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(item.getTrackNumber()));
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(item.getTrackId()));
                     context.startActivity(intent);
                 }
             }

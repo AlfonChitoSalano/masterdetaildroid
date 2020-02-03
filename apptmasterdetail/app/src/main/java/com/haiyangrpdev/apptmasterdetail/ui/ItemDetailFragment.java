@@ -26,7 +26,7 @@ public class ItemDetailFragment extends Fragment {
     private AppITunes mItem;
     public static final String ARG_ITEM_ID = "item_id";
 
-    private int mTrackNumber = 0;
+    private long mTrackId = 0;
 
     public ItemDetailFragment() { }
 
@@ -39,8 +39,21 @@ public class ItemDetailFragment extends Fragment {
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
 
+            mTrackId = Long.parseLong(getArguments().getString(ARG_ITEM_ID));
+            String jsonData = ExtStorageHelper.readData("songsFolder","songs.txt", ItemDetailFragment.this.getContext());
+            Gson gson = new Gson();
+            List<AppITunes> songs = gson.fromJson(jsonData, new TypeToken<List<AppITunes>>(){}.getType());
+
+            for (AppITunes song: songs) {
+                if(song.getTrackId() == mTrackId){
+                    mItem = song;
+                    break;
+                }
+            }
+
             if (appBarLayout != null) {
             //ct0.temp rem dummy  appBarLayout.setTitle(mItem.content);
+                appBarLayout.setTitle(mItem.getTrackName());
             }
         }
     }
@@ -48,18 +61,6 @@ public class ItemDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_detail, container, false);
-
-        mTrackNumber = Integer.parseInt(getArguments().getString(ARG_ITEM_ID));
-        String jsonData = ExtStorageHelper.readData("songsFolder","songs.txt", ItemDetailFragment.this.getContext());
-        Gson gson = new Gson();
-        List<AppITunes> songs = gson.fromJson(jsonData, new TypeToken<List<AppITunes>>(){}.getType());
-
-        for (AppITunes song: songs) {
-            if(song.getTrackNumber() == mTrackNumber){
-                mItem = song;
-                break;
-            }
-        }
 
         if (mItem != null) {
             ImageView imageView = rootView.findViewById(R.id.ivArtwork);

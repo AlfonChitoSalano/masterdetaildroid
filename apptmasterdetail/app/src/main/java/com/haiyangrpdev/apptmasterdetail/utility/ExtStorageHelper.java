@@ -16,8 +16,9 @@ public class ExtStorageHelper {
     public static void saveData(String folderName, String fileName, String dataJson, Context context) {
         try {
             File dataFile = createFilePath(folderName, fileName, context);
+            Boolean hasSavedData = dataFile.length() > 0;
 
-            if (dataFile != null) {
+            if (!(dataFile == null || hasSavedData)) {
                 FileOutputStream mOutput = new FileOutputStream(dataFile, true);
                 mOutput.write(dataJson.getBytes());
 

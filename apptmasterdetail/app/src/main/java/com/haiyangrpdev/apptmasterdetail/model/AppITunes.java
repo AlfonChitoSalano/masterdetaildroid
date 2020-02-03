@@ -9,6 +9,14 @@ import java.util.Map;
 public class AppITunes {
 
     @Expose
+    @SerializedName("trackId")
+    private long TrackId;
+
+    public long getTrackId() {
+        return TrackId;
+    }
+
+    @Expose
     @SerializedName("trackName")
     private String TrackName;
 
