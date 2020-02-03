@@ -2,7 +2,6 @@ package com.haiyangrpdev.apptmasterdetail.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.fragment.app.Fragment;
@@ -11,20 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 import com.haiyangrpdev.apptmasterdetail.utility.ExtStorageHelper;
-
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.Date;
 
 public class ItemDetailFragment extends Fragment {
 
     private AppITunes mItem;
     public static final String ARG_ITEM_ID = "item_id";
-
     private long mTrackId = 0;
 
     public ItemDetailFragment() { }
@@ -34,10 +33,8 @@ public class ItemDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            //ct0.temp rem dummy  mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-
             mTrackId = Long.parseLong(getArguments().getString(ARG_ITEM_ID));
             String jsonData = ExtStorageHelper.readData("songsFolder","songs.txt", ItemDetailFragment.this.getContext());
             Gson gson = new Gson();
@@ -52,6 +49,13 @@ public class ItemDetailFragment extends Fragment {
 
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.getTrackName());
+                jsonData = gson.toJson(mItem);
+                ExtStorageHelper.removeFilePath("songsFolder", "songItem.txt", ItemDetailFragment.this.getContext());
+                ExtStorageHelper.saveData("songsFolder", "songItem.txt", jsonData, ItemDetailFragment.this.getContext());
+
+                String date = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.getDefault()).format(new Date());
+                ExtStorageHelper.removeFilePath("songsFolder", "dateItem.txt", ItemDetailFragment.this.getContext());
+                ExtStorageHelper.saveData("songsFolder", "dateItem.txt", date, ItemDetailFragment.this.getContext());
             }
         }
     }

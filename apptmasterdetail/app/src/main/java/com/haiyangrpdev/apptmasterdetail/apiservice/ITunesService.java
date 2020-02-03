@@ -25,7 +25,7 @@ public class ITunesService {
             mSongsApi = mRetrofit.create(SongsApi.class);
         }
         catch (Exception e) {
-            String errorMessage = e.getMessage();
+            e.printStackTrace();
         }
     }
 

@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
+import java.util.ArrayList;
 import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
@@ -34,13 +35,13 @@ import com.google.gson.reflect.TypeToken;
 
 public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
-    private boolean mWritePermitted;
-    private boolean mReadPermitted;
+    private static boolean mWritePermitted = false;
+    private static boolean mReadPermitted = false;
     private boolean mTwoPane;
     private List<AppITunes> mData;
     private static final int STORAGE_REQUEST = 1;
-    private static int WRITE_PERMISSION = 1;
-    private static int READ_PERMISSION = 2;
+    private static int WRITE_PERMISSION = 2;
+    private static int READ_PERMISSION = 3;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -56,6 +57,11 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         setContentView(R.layout.activity_item_list);
 
         try {
+            //ask write and read permission
+            if (!(mWritePermitted || mReadPermitted)) {
+                askReadWritePermission();
+            }
+
             //prepare data via VM
             if (isNetworkAvailable()) {
                 viewModel.getData();
@@ -74,13 +80,20 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
                 mTwoPane = true;
             }
 
-            //ask permission
-            if (isReadStoragePermissionGranted() && isWriteStoragePermissionGranted()) {
-                String previousVisited = ExtStorageHelper.readData("songsFolder", "songs.txt", this);
+            //read the last visited song
+            if (mReadPermitted) {
+                String previousVisited = ExtStorageHelper.readData("songsFolder", "songItem.txt", this);
+                String dateVisited = ExtStorageHelper.readData("songsFolder", "dateItem.txt", this);
 
-                if (!TextUtils.isEmpty(previousVisited)){
+                if (!TextUtils.isEmpty(previousVisited) && !TextUtils.isEmpty(dateVisited)){
                     Gson gson = new Gson();
                     AppITunes song = gson.fromJson(previousVisited, new TypeToken<AppITunes>(){}.getType());
+
+                    if (song != null) {
+                        TextView tvSaved = findViewById(R.id.tvSaved);
+                        tvSaved.setVisibility(View.VISIBLE);
+                        tvSaved.setText("You previously visited " + song.getTrackName() + " on " + dateVisited);
+                    }
                 }
             }
         }
@@ -99,30 +112,40 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mData, mTwoPane));
     }
 
-    private boolean isWriteStoragePermissionGranted() {
+    private void askReadWritePermission() {
+        ArrayList<String> permissionRequest = new ArrayList<String>();
+
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, READ_PERMISSION);
-                return false;
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
-        } else {
-            return true;
+            else {
+                mWritePermitted = true;
+            }
+
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            else {
+                mReadPermitted = true;
+            }
+
+            if (!(mReadPermitted || mWritePermitted)) {
+                String[] permissionArray = getStringArray(permissionRequest);
+                ActivityCompat.requestPermissions(this, permissionArray, 25);
+            }
         }
     }
 
-    private boolean isReadStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION);
-                return false;
-            }
-        } else {
-            return true;
+    private String[] getStringArray(ArrayList<String> arr)
+    {
+        String str[] = new String[arr.size()];
+
+        for (int j = 0; j < arr.size(); j++) {
+            str[j] = arr.get(j);
         }
+
+        return str;
     }
 
     private boolean isNetworkAvailable() {
@@ -224,9 +247,12 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
             if (songs == null) return;
             mData = songs;
 
-            Gson gson = new Gson();
-            String jsonData = gson.toJson(mData);
-            ExtStorageHelper.saveData("songsFolder", "songs.txt", jsonData, ItemListActivity.this);
+            if (mWritePermitted) {
+                Gson gson = new Gson();
+                String jsonData = gson.toJson(mData);
+                ExtStorageHelper.saveData("songsFolder", "songs.txt", jsonData, ItemListActivity.this);
+            }
+
             View recyclerView = findViewById(R.id.item_list);
             assert recyclerView != null;
             setupRecyclerView((RecyclerView) recyclerView);

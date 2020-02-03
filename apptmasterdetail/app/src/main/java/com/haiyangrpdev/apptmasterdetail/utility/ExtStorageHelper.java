@@ -13,6 +13,19 @@ import java.io.FileInputStream;
 
 public class ExtStorageHelper {
 
+    public static void removeFilePath(String folderName, String fileName, Context context) {
+        try {
+            File dataFile = createFilePath(folderName, fileName, context);
+
+            if (dataFile != null ) {
+                dataFile.delete();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void saveData(String folderName, String fileName, String dataJson, Context context) {
         try {
             File dataFile = createFilePath(folderName, fileName, context);
