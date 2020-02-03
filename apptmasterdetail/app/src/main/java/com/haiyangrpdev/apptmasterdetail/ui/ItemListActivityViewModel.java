@@ -36,7 +36,7 @@ public class ItemListActivityViewModel extends BaseViewModel {
             this.Songs.postValue(songs);
         }
         catch (Exception e) {
-            String errorMessage = e.getMessage();
+            e.printStackTrace();
         }
     }
 

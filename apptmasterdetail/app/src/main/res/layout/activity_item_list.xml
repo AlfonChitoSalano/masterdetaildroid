@@ -29,7 +29,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <TextView
             android:id="@+id/tvSaved"
-            android:textSize="20dp"
+            android:textSize="14dp"
             android:textColor="#DA596A"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
