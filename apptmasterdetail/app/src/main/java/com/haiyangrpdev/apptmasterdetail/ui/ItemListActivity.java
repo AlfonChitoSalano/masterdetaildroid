@@ -10,7 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-import android.os.Environment;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.lifecycle.Observer;
 import androidx.annotation.Nullable;
-
 import com.google.gson.Gson;
 import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
@@ -26,13 +26,12 @@ import java.util.List;
 import com.haiyangrpdev.apptmasterdetail.ui.base.BaseActivity;
 import com.haiyangrpdev.apptmasterdetail.model.AppITunes;
 import com.bumptech.glide.Glide;
-import android.os.storage.StorageManager;
-import android.os.storage.StorageVolume;
 import com.haiyangrpdev.apptmasterdetail.utility.ExtStorageHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import com.google.gson.reflect.TypeToken;
 
 public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
@@ -78,7 +77,13 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
 
             //ask permission
             if (isReadStoragePermissionGranted() && isWriteStoragePermissionGranted()) {
-                //do nothing
+                String previousVisited = ExtStorageHelper.readData("songsFolder", "songs.txt", this);
+
+                if (!TextUtils.isEmpty(previousVisited)){
+                    Gson gson = new Gson();
+                    AppITunes song = gson.fromJson(previousVisited, new TypeToken<AppITunes>(){}.getType());
+                }
+
             }
         }
         catch (Exception e) {
