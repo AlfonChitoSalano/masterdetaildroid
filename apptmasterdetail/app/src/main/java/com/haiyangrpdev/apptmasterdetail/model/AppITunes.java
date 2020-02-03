@@ -3,10 +3,15 @@ package com.haiyangrpdev.apptmasterdetail.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AppITunes {
+
+    @Expose
+    @SerializedName("trackId")
+    private long TrackId;
+
+    public long getTrackId() {
+        return TrackId;
+    }
 
     @Expose
     @SerializedName("trackName")
