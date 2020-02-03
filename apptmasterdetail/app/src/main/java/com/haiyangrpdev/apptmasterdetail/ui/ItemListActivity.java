@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.lifecycle.Observer;
 import androidx.annotation.Nullable;
+
+import com.google.gson.Gson;
 import com.haiyangrpdev.apptmasterdetail.R;
 import com.haiyangrpdev.apptmasterdetail.apiservice.ITunesService;
 import java.util.List;
@@ -218,7 +220,10 @@ public class ItemListActivity extends BaseActivity<ItemListActivityViewModel> {
             //draw view
             if (songs == null) return;
             mData = songs;
-            ExtStorageHelper.saveData("songsFolder", "songs.txt", "Data", ItemListActivity.this);
+
+            Gson gson = new Gson();
+            String songsJson = gson.toJson(mData);
+            ExtStorageHelper.saveData("songsFolder", "songs.txt", songsJson, ItemListActivity.this);
             View recyclerView = findViewById(R.id.item_list);
             assert recyclerView != null;
             setupRecyclerView((RecyclerView) recyclerView);
